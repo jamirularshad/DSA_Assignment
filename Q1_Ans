@@ -1,0 +1,37 @@
+int insertSortedLL(LinkedList *ll, int item) {
+    ListNode *current = ll->head;
+    ListNode *prev = NULL;
+    int index = 0;
+
+    // Traverse the list to find the correct insertion point.
+    while (current != NULL && current->item < item) {
+        prev = current;
+        current = current->next;
+        index++;
+    }
+
+    // If the item is found in the list, do not insert it again.
+    if (current != NULL && current->item == item) {
+        return -1;
+    }
+
+    // Create a new node.
+    ListNode *newNode = malloc(sizeof(ListNode));
+    if (newNode == NULL) { // Always check if malloc was successful.
+        exit(EXIT_FAILURE);
+    }
+    newNode->item = item;
+    
+    // Insert the new node into the list.
+    if (prev == NULL) { // Insert at the beginning.
+        newNode->next = ll->head;
+        ll->head = newNode;
+    } else { // Insert after the previous node.
+        newNode->next = prev->next;
+        prev->next = newNode;
+    }
+    
+    ll->size++; // Increase the size of the linked list.
+
+    return index; // Return the index where the new node was inserted.
+}
